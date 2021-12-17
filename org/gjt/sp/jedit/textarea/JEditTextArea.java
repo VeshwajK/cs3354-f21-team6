@@ -358,6 +358,55 @@ public class JEditTextArea extends TextArea
 			GUIUtilities.error(view,"format-maxlinelen",null);
 		}
 	} //}}}
+	public int wordCount(String text){
+
+		char[] chars = text.toCharArray();
+		int wordCount = 0;
+
+		boolean word = true;
+
+		for (char aChar : chars)
+		{
+			switch (aChar)
+			{
+				case '\r':
+				case '\n':
+				case ' ':
+				case '\t':
+					word = true;
+					break;
+				default:
+					if (word) {
+						wordCount++;
+						word = false;
+					}
+					break;
+			}
+		}
+		return wordCount;
+	}
+
+
+	public int wordOffset(String text){
+
+		char[] chars = text.toCharArray();
+		int caretPosition = getCaretPosition();
+
+		int wordCount = 1;
+
+		boolean word = true;
+
+		for(int i = 0; i < caretPosition; i++){
+			if(chars[i] == ' ' || chars[i] == '\n' && word){
+				wordCount++;
+				word = false;
+			}
+			else {
+				word = true;
+			}
+		}
+		return wordCount;
+	}
 
 	//{{{ doWordCount() method
 	@SuppressWarnings("fallthrough")
